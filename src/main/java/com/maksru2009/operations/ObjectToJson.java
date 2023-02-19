@@ -23,40 +23,12 @@ public class ObjectToJson {
         return objStr;
     }
 
-    //преобразовывал мапку в лист для записи в файл
-    private List<String> listJson (Map<Integer,DiscountCard> map){
-        List<String> list = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        map.forEach((key,value) ->{
-            try {
-                list.add(objectMapper.writeValueAsString(value));
-            } catch (JsonProcessingException e) {
-                logger.info(e.getMessage()+"\n json conversion error");
-            }
-        });
-        return list;
-    }
-    //использовал для записи в файл json lists
-    public void writeListToTxt(Map<Integer, DiscountCard> map){
-        try{
-            FileWriter writer = new FileWriter("jsonDiscount.txt");
-            List<String> stringList = new ArrayList<>();
-            stringList = listJson(map);
-            for (String s:stringList) {
-                writer.write(s + System.lineSeparator());
-            }
-            writer.close();
-        }catch (IOException e){
-            logger.info(e.getMessage()+"\n write file jsonDiscount error");
-        }
-    }
-
     //загрузка из файла листа с json Product
-    public Map<Integer,Product> productMapFromFile(){
+    public Map<Integer,Product> productMapFromFile(String fileName,Class<?> c){
         Map<Integer,Product> map = new HashMap<>();
         try{
-            ClassLoader classLoader = getClass().getClassLoader();
-            InputStream inputStream = classLoader.getResourceAsStream("jsonProduct.txt");
+            ClassLoader classLoader = c.getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream(fileName);
             if (inputStream == null)throw new IllegalArgumentException();
             InputStreamReader streamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(streamReader);
@@ -93,11 +65,11 @@ public class ObjectToJson {
     }
 
     //загрузка из файла листа с json DiscountCard
-    public Map<Integer,DiscountCard> discountMapFromFile(){
+    public Map<Integer,DiscountCard> discountMapFromFile(String fileName,Class<?> c){
         Map<Integer,DiscountCard> map = new HashMap<>();
         try{
-            ClassLoader classLoader = getClass().getClassLoader();
-            InputStream inputStream = classLoader.getResourceAsStream("jsonDiscount.txt");
+            ClassLoader classLoader = c.getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream(fileName);
             if (inputStream == null)throw new IllegalArgumentException();
             InputStreamReader streamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(streamReader);

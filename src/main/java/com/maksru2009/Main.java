@@ -21,13 +21,13 @@ public class Main {
             logger.info("add next arguments: 7-5, 2-4, 10-9, 4-2, 7-1, 5-5, card-26");
             cart = new UpdateCartInf()
                     .getCartWithUpdProductAndPrices
-                            (aaa,defaultMaps.checkEmptyDisc(new ObjectToJson().discountMapFromFile())
-                                    ,defaultMaps.checkEmptyProduct(new ObjectToJson().productMapFromFile()));
+                            (aaa,defaultMaps.checkEmptyDisc(new ObjectToJson().discountMapFromFile("jsonDiscount.txt",ObjectToJson.class))
+                                    ,defaultMaps.checkEmptyProduct(new ObjectToJson().productMapFromFile("jsonProduct.txt", ObjectToJson.class)));
         }else {
             cart = new UpdateCartInf()
                     .getCartWithUpdProductAndPrices
-                            (args,defaultMaps.checkEmptyDisc(new ObjectToJson().discountMapFromFile())
-                                    ,defaultMaps.checkEmptyProduct(new ObjectToJson().productMapFromFile()));
+                            (args,defaultMaps.checkEmptyDisc(new ObjectToJson().discountMapFromFile("jsonDiscount.txt",ObjectToJson.class))
+                                    ,defaultMaps.checkEmptyProduct(new ObjectToJson().productMapFromFile("jsonProduct.txt",ObjectToJson.class)));
         }
 
         cart = new OperationsWithCart(cart).getCartWithUpdPrices();
