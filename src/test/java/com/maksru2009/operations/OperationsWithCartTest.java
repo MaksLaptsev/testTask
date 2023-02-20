@@ -105,7 +105,4 @@ class OperationsWithCartTest {
 
         Assertions.assertThat(new OperationsWithCart(cart).getCartWithUpdPrices()).isNotEqualTo(expectedCart);
     }
-
-
-
 }

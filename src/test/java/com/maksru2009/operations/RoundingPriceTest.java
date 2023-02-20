@@ -2,14 +2,32 @@ package com.maksru2009.operations;
 
 import org.junit.jupiter.api.Test;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 class RoundingPriceTest {
 
-    @Test
-    void checkRoundPriceCorrect() {
-        double expected = 15.76;
+    @ParameterizedTest
+    @MethodSource("argsRoundPrice")
+    void checkRoundPriceCorrect(double expected, double test) {
+        Assertions.assertThat(new RoundingPrice().roundPrice(test)).isEqualTo(expected);
+    }
 
-        Assertions.assertThat(new RoundingPrice().roundPrice(15.7566666666)).isEqualTo(expected);
+    static Stream<Arguments> argsRoundPrice(){
+        return Stream.of(
+                Arguments.of(
+                        15.76,15.75555
+                ),
+                Arguments.of(
+                        18.99,18.988888
+                ),
+                Arguments.of(
+                        956.13,956.1267423
+                )
+        );
     }
     @Test
     void checkRoundPriceUnCorrect() {
