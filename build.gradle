@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+}
+apply plugin: 'application'
+
+
+group 'com.maksru2009'
+version '1.0-SNAPSHOT'
+
+ext {
+    javaMainClass = "com.maksru2009.Main"
+}
+
+application {
+    mainClassName = javaMainClass
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation 'org.mockito:mockito-core:5.1.1'
+    testImplementation 'org.mockito:mockito-junit-jupiter:2.17.0'
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+
+
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.32'
+    implementation group: 'com.itextpdf', name: 'layout', version: '7.2.0'
+    implementation group: 'com.itextpdf', name: 'kernel', version: '7.2.0'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.0'
+
+}
+
+jar {
+    manifest {
+        attributes(
+                "Main-Class": "com.maksru2009.Main",
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+            {
+                exclude "META-INF/*.SF"
+                exclude "META-INF/*.DSA"
+                exclude "META-INF/*.RSA"
+            }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+test {
+    useJUnitPlatform()
+}
