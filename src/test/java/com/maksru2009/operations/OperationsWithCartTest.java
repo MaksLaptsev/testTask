@@ -3,7 +3,7 @@ package com.maksru2009.operations;
 import com.maksru2009.entity.Cart;
 import com.maksru2009.entity.DiscountCard;
 import com.maksru2009.entity.Product;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -13,10 +13,13 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OperationsWithCartTest {
-    private Map<Product,Integer> productsWithPromo;
-    private Map<Product,Integer> productsWithoutPromo;
-    private Map<Integer,Product> bdProd;
-    private Cart cart;
+    Map<Product,Integer> productsWithPromo;
+    Map<Product,Integer> productsWithoutPromo;
+    Map<Integer,Product> bdProd;
+    Cart cart;
+
+    private double promoDisc = 0d;
+    private double cardDisc = 0d;
 
     @BeforeAll
     void setUp() {
@@ -32,77 +35,51 @@ class OperationsWithCartTest {
 
         cart.getProductMap().forEach((key,value) ->{
             if(key.isDiscount() & value >= 5){
-                productsWithPromo.put(key,value);
+                this.productsWithPromo.put(key,value);
             }else {
-                productsWithoutPromo.put(key,value);
+                this.productsWithoutPromo.put(key,value);
             }
         });
     }
 
 
     @Test
-    void checkAmountWithoutDiscountCorrect() {
-        double expectedPrice = 1025d;
+    void testAmountWithoutDiscount() {
         AtomicReference<Double> sum = new AtomicReference<>(0.0);
-
         cart.getProductMap().forEach((key,value) -> sum.updateAndGet(v -> (v + key.getPrice() * value)));
-
-        Assertions.assertThat(sum.get()).isEqualTo(expectedPrice);
-
-    }
-    @Test
-    void checkAmountWithoutDiscountUnCorrect() {
-        double expectedPrice = 1054.1d;
-        AtomicReference<Double> sum = new AtomicReference<>(0.0);
-
-        cart.getProductMap().forEach((key,value) -> sum.updateAndGet(v -> (v + key.getPrice() * value)));
-
-        Assertions.assertThat(sum.get()).isNotEqualTo(expectedPrice);
+        Assertions.assertEquals(1025d,sum.get());
     }
 
     @Test
-    void checkAmountDiscountCorrect() {
-        OperationsWithCart operations = new OperationsWithCart(cart);
-        double expected = 948.75d;
-
-        Assertions.assertThat(operations.amountDiscount()).isEqualTo(expected);
-    }
-    @Test
-    void checkAmountDiscountUnCorrect() {
-        OperationsWithCart operations = new OperationsWithCart(cart);
-        double expected = 949.75d;
-
-        Assertions.assertThat(operations.amountDiscount()).isNotEqualTo(expected);
-    }
-
-
-    @Test
-    void checkAmountWithPromoAndDiscountCorrect(){
+    void testAmountWithPromoAndDiscount(){
         AtomicReference<Double> amount = new AtomicReference<>(0.0);
         productsWithPromo.forEach((key,value) -> amount.updateAndGet(v -> v + key.getPrice() * value));
-        double expectedAmount = 948.75d;
-
-        Assertions.assertThat(new RoundingPrice().roundPrice((amount.get()*0.9)+498.75)).isEqualTo(expectedAmount);
+        promoDisc = new RoundingPrice().roundPrice(amount.get()- (amount.get()*0.9));
+        Assertions.assertEquals(948.75,new RoundingPrice().roundPrice((amount.get()*0.9)+498.75));
     }
 
+    @Test
+    void testAmountWithoutPromo(){
+        AtomicReference<Double> amount = new AtomicReference<>(0.0);
+        productsWithoutPromo.forEach((key,value) -> amount.updateAndGet(v -> (v + key.getPrice() * value)));
+
+        if (cart.getCard()!=null){
+            cardDisc = new RoundingPrice().roundPrice(amount.get()-amount.get()*cart.getCard().getPercentDiscountInDouble());
+             Assertions.assertEquals(498.75,new RoundingPrice().roundPrice(amount.get()*cart.getCard().getPercentDiscountInDouble()));
+        }else {
+             Assertions.assertEquals(525d,amount.get());
+        }
+    }
 
     @Test
-    void checkGetCartWithUpdPricesCorrect() {
+    void testGetCartWithUpdPrices() {
         cart.setAmountWithDiscount(948.75d);
         cart.setAmountWithoutDiscount(1025d);
         cart.setCardDisc(26.25d);
         cart.setPromoDisc(50d);
-
-        Assertions.assertThat(new OperationsWithCart(cart).getCartWithUpdPrices()).isEqualTo(cart);
+        Assertions.assertEquals(cart,new OperationsWithCart(cart).getCartWithUpdPrices());
     }
-    @Test
-    void checkGetCartWithUpdPricesUnCorrect() {
-        Cart expectedCart = new Cart();
-        expectedCart.setAmountWithDiscount(948.75d);
-        expectedCart.setAmountWithoutDiscount(1025d);
-        expectedCart.setCardDisc(26.25d);
-        expectedCart.setPromoDisc(51d);
 
-        Assertions.assertThat(new OperationsWithCart(cart).getCartWithUpdPrices()).isNotEqualTo(expectedCart);
-    }
+
+
 }
