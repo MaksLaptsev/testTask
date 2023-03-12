@@ -1,2 +1,0 @@
-{"id":154,"percentDiscount":10,"percentDiscountInDouble":0.9}
-{"id":26,"percentDiscount":6,"percentDiscountInDouble":0.94}

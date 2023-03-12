@@ -1,2 +1,0 @@
-{"id":2,"name":"Furry Friends","maker":"unknown","height":0.0,"width":0.0,"length":0.0,"weight":0.0,"price":175.0,"discount":false}
-{"id":3,"name":"Cuddlr","maker":"unknown","height":0.0,"width":0.0,"length":0.0,"weight":0.0,"price":1000.0,"discount":false}
