@@ -1,5 +1,0 @@
-{"id":1,"percentDiscount":20,"percentDiscountInDouble":0.8}
-{"id":1234,"percentDiscount":5,"percentDiscountInDouble":0.95}
-{"id":2,"percentDiscount":13,"percentDiscountInDouble":0.87}
-{"id":154,"percentDiscount":10,"percentDiscountInDouble":0.9}
-{"id":26,"percentDiscount":6,"percentDiscountInDouble":0.94}
