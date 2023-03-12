@@ -139,3 +139,4 @@ select people.passenger_name, people.contact_data::jsonb->>'phone' phone_number 
                                                     order by s.seat_no) ST on ST.seat_no = BP.seat_no
                     order by BP.ticket_no) TN on TN.ticket_no = people.ticket_no
 group by people.passenger_name, people.contact_data::jsonb->>'phone';
+
