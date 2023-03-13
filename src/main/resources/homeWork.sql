@@ -96,10 +96,10 @@ comment on schema homeTasks is 'Create homeTasks schema';
 --Customers
 create table if not exists homeTasks.Customers (
                                                    id bigserial primary key ,
-                                                   firstName varchar(30) not null check ( firstName !='' ),
-                                                   lastName varchar(30) not null check ( lastName!='' ),
-                                                   email varchar not null,
-                                                   phone varchar
+                                                   firstName varchar(30) not null check ( firstName != '' ),
+                                                   lastName varchar(30) not null check ( lastName != '' ),
+                                                   email varchar(50) not null check ( email != '' ),
+                                                   phone varchar(20)
 );
 --Orders
 create table if not exists homeTasks.Orders(
