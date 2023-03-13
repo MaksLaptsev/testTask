@@ -95,7 +95,7 @@ create schema if not exists homeTasks;
 comment on schema homeTasks is 'Create homeTasks schema';
 --Customers
 create table if not exists homeTasks.Customers (
-                                                   id serial primary key ,
+                                                   id bigserial primary key ,
                                                    firstName varchar(30) not null check ( firstName !='' ),
                                                    lastName varchar(30) not null check ( lastName!='' ),
                                                    email varchar not null,
@@ -103,7 +103,7 @@ create table if not exists homeTasks.Customers (
 );
 --Orders
 create table if not exists homeTasks.Orders(
-                                               id serial primary key ,
+                                               id bigserial primary key ,
                                                customerId integer references homeTasks.Customers(id),
                                                quantity integer not null check ( quantity >= 0 )
 );
