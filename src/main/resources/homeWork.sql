@@ -52,7 +52,9 @@ group by ff.flight_no, ff.scheduled_departure, ff.scheduled_arrival, ff.departur
 order by ff.scheduled_departure limit 1;
 
 --только потом заметил табличку flights_v :D
-select f.* from flights_v f
+select f.flight_id,f.flight_no,f.scheduled_departure,f.scheduled_departure_local,f.scheduled_arrival,
+       f.scheduled_arrival_local,f.scheduled_duration,f.departure_airport,f.departure_airport_name,f.departure_city,
+       f.arrival_airport,f.arrival_airport_name,f.arrival_city,f.status,f.aircraft_code from flights_v f
 where
         f.departure_city = 'Екатеринбург' and
         f.arrival_city = 'Москва' and(
@@ -62,22 +64,22 @@ order by f.scheduled_departure limit 1;
 
 --Task 6
 --Вывести самый дешевый и дорогой билет и стоимость ( в одном результирующем ответе)
-select * from (
-                  select * from ticket_flights
+select ticket_no,flight_id,fare_conditions,amount from (
+                  select ticket_no,flight_id,fare_conditions,amount from ticket_flights
                   where amount = (select max(amount) from ticket_flights)
                   limit 1
               ) as "tf*" union (
-    select * from ticket_flights
+    select ticket_no,flight_id,fare_conditions,amount from ticket_flights
     where amount = (select min(amount) from ticket_flights)
     limit 1
 );
 
-select * from (
-                  select * from ticket_flights
+select ticket_no,flight_id,fare_conditions,amount from (
+                  select ticket_no,flight_id,fare_conditions,amount from ticket_flights
                   order by amount desc
                   limit 1
               ) as "tf*" union (
-    select * from ticket_flights
+    select ticket_no,flight_id,fare_conditions,amount from ticket_flights
     order by amount
     limit 1
 );
@@ -88,34 +90,46 @@ select * from (
 -- Написать 5 insert в эти таблицы
 -- удалить таблицы
 
+
 create schema if not exists homeTasks;
 comment on schema homeTasks is 'Create homeTasks schema';
 --Customers
 create table if not exists homeTasks.Customers (
-    id integer primary key ,
-    firstName varchar not null,
-    lastName varchar not null,
-    email varchar not null,
-    phone varchar
+                                                   id serial primary key ,
+                                                   firstName varchar(30) not null check ( firstName !='' ),
+                                                   lastName varchar(30) not null check ( lastName!='' ),
+                                                   email varchar not null,
+                                                   phone varchar
 );
 --Orders
 create table if not exists homeTasks.Orders(
-    id integer primary key ,
-    customerId integer references homeTasks.Customers(id),
-    quantity integer not null check ( quantity >= 0 )
+                                               id serial primary key ,
+                                               customerId integer references homeTasks.Customers(id),
+                                               quantity integer not null check ( quantity >= 0 )
 );
 --Inserts
-insert into homeTasks.Customers(id, firstName, lastName, email, phone)
-values (1,'Gabriel','Angel','gabriel@god.com','103');
-insert into homeTasks.Customers(id, firstName, lastName, email, phone)
-values (2,'Mihail','Boyarskiy','Goreloc@god.com','777');
-insert into homeTasks.Customers(id, firstName, lastName, email, phone)
-values (3,'Chappy','Journo','platinum@god.com','999');
+insert into homeTasks.Customers(firstName, lastName, email, phone)
+values ('Gabriel','Angel','gabriel@god.com','103');
+insert into homeTasks.Customers(firstName, lastName, email, phone)
+values ('Mihail','Boyarskiy','Goreloc@god.com','777');
+insert into homeTasks.Customers(firstName, lastName, email, phone)
+values ('Chappy','Journo','platinum@god.com','999');
+insert into homeTasks.Customers(firstName, lastName, email, phone)
+values ('Veolla','Leanore','platinum@god.com','1');
+insert into homeTasks.Customers(firstName, lastName, email, phone)
+values ('Jack','Ripper','dead@hell.com','666');
 
-insert into homeTasks.Orders(id, customerId, quantity)
-values(1,1,6);
-insert into homeTasks.Orders(id, customerId, quantity)
-values(2,2,115);
+insert into homeTasks.Orders(customerId, quantity)
+values((select id from homeTasks.Customers where firstName = 'Gabriel'),6);
+insert into homeTasks.Orders(customerId, quantity)
+values((select id from homeTasks.Customers where firstName = 'Mihail'),115);
+insert into homeTasks.Orders(customerId, quantity)
+values((select id from homeTasks.Customers where firstName = 'Chappy'),333);
+insert into homeTasks.Orders(customerId, quantity)
+values((select id from homeTasks.Customers where firstName = 'Veolla'),666);
+insert into homeTasks.Orders(customerId, quantity)
+values((select id from homeTasks.Customers where firstName = 'Jack'),321);
+
 --Drop all
 drop schema homeTasks cascade;
 
@@ -139,4 +153,3 @@ select people.passenger_name, people.contact_data::jsonb->>'phone' phone_number 
                                                     order by s.seat_no) ST on ST.seat_no = BP.seat_no
                     order by BP.ticket_no) TN on TN.ticket_no = people.ticket_no
 group by people.passenger_name, people.contact_data::jsonb->>'phone';
-
