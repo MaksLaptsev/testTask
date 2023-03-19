@@ -4,7 +4,6 @@ import ru.clevertec.dao.CartDao;
 import ru.clevertec.entity.Cart;
 import ru.clevertec.entity.Product;
 import ru.clevertec.utils.checkCreator.RoundingPrice;
-
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 

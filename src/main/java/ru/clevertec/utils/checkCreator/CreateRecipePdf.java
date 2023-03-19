@@ -17,7 +17,6 @@ import ru.clevertec.entity.Cart;
 import ru.clevertec.entity.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -167,7 +166,7 @@ public class CreateRecipePdf {
                     .setTextAlignment(TextAlignment.RIGHT))
                     .setFontSize(8f)
                     .setBorder(Border.NO_BORDER);
-            itemsAndPricesTable.addCell(new Cell().add(new Paragraph("$"+(value*key.getPrice())))
+            itemsAndPricesTable.addCell(new Cell().add(new Paragraph("$"+(new RoundingPrice().roundPrice(value*key.getPrice()))))
                     .setTextAlignment(TextAlignment.RIGHT))
                     .setFontSize(8f)
                     .setBorder(Border.NO_BORDER);

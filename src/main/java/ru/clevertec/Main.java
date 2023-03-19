@@ -18,8 +18,8 @@ public class Main {
         Cart cart;
 
         if(args == null || args.length == 0){
-            String[] aaa={"8-50"," 6-114"," 1-900", "2-2", "5-111","3-115", "card-1"};
-            logger.info("add next arguments: 8-50, 6-114, 1-900, 2-2, 5-111, 3-115, card-1");
+            String[] aaa={"9-13"," 6-15"," 2-77", "4-9", "5-6","3-15", "card-2"};
+            logger.info("add next arguments: 9-13, 6-15, 2-77, 4-9, 5-6, 3-15, card-2");
             cart = new ConvertInputStr().getCartFromInputArgs(aaa);
         }else {
             cart = new ConvertInputStr().getCartFromInputArgs(args);

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.Arrays;
 
 class CreateRecipePdfTest {
 
@@ -20,11 +20,10 @@ class CreateRecipePdfTest {
     @BeforeEach
     void setUp() {
         recipePdf = new CreateRecipePdf();
-        HashMap<Product,Integer> map = new HashMap<>();
-        map.put(new Product(1,"Purrfect Treats","unknown",0.0,0.0,0.0,0.0,100.0,true ),7);
         cart = new Cart();
-        cart.setCard(new DiscountCard(1,20));
-        cart.setProductMap(map);
+        cart.setDiscountCard(DiscountCard.builder().id(1).percentDiscount(20).percentDiscountInDouble(0.8).build());
+        cart.setListProduct(Arrays.asList(Product.builder().id(1).name("name").maker("unknown").isDiscount(true).price(100).build(),
+                Product.builder().id(2).name("name").maker("unknown").isDiscount(false).price(123).build()));
     }
 
     @AfterEach

@@ -7,7 +7,6 @@ import ru.clevertec.entity.Cart;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
 import java.util.Optional;
 
 public class CartDao implements Dao<Cart> {

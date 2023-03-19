@@ -2,7 +2,6 @@ package ru.clevertec.utils.checkCreator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class DirToSaveCheck {
     private static final Logger logger = LoggerFactory.getLogger(DirToSaveCheck.class);
-    static String path;
+    public static String path;
     public static String directoryCreateFolder(){
         String folder = path+"\\RecipeFolder"+"\\Recipe.pdf";
         String regularExpression = "[a-zA-Z]:\\\\(?:([^<>:\"\\/\\\\|?*]*[^<>:\"\\/\\\\|?*.]\\\\|..\\\\)*([^<>:\"\\/\\\\|?*]*[^<>:\"\\/\\\\|?*.]\\\\?|..\\\\))?";
